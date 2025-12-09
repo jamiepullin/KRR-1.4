@@ -10,7 +10,7 @@ musk = Atom("Musk")
 kimk = Atom("KimK")
 jimmy_kimmel = Atom("JimmyKimmel")
 
-# Legan Entities
+# Legal Entities
 nvidia = Atom("Nvidia")
 apple = Atom("Apple")
 tesla = Atom("Tesla")
@@ -47,9 +47,8 @@ endorses = Atom("endorses")
 tweets_about = Atom("tweets_about")
 consumes = Atom("consumes")
 appears_on = Atom("appears_on")
-is_probably = Atom("is probably")
+identifies_with = Atom("identifies_with")
 lives_in = Atom("lives in")
-
 
 
 # Facts----------------------------
@@ -72,51 +71,51 @@ rules = [
     # Anyone who consumes coffee is a coffee lover
     Rule(
         antecedent=[Fact(Compound(consumes, [X, coffee]))],
-        consequent=Fact(Compound(is_probably, [X, coffee_lover])),
+        consequent=Fact(Compound(identifies_with, [X, coffee_lover])),
         direction="forward"
     ),
     # Anyone tweeting about climate-friendly things is eco-friendly
     Rule(
         antecedent=[Fact(Compound(tweets_about, [X, climate_friendly]))],
-        consequent=Fact(Compound(is_probably, [X, eco_friendly])),
+        consequent=Fact(Compound(identifies_with, [X, eco_friendly])),
         direction="forward"
     ),
     # Anyone appearing on snl likes avocado toast
     Rule(
         antecedent=[Fact(Compound(appears_on, [X, snl]))],
-        consequent=Fact(Compound(likes, [X, avocado_toast])),
+        consequent=Fact(Compound(identifies_with, [X, avocado_toast])),
         direction="forward"
     ),
     # Trump tweeting about eco-friendly → attention-seeking
     Rule(
         antecedent=[Fact(Compound(tweets_about, [trump, eco_friendly]))],
-        consequent=Fact(Compound(is_probably, [trump, attention_seeking])),
+        consequent=Fact(Compound(identifies_with, [trump, attention_seeking])),
         direction="forward"
     ),
     # trump endorses Tesla → musk untouchable
     Rule(
         antecedent=[Fact(Compound(endorses, [trump, tesla]))],
-        consequent=Fact(Compound(is_probably, [musk, untouchable])),
+        consequent=Fact(Compound(identifies_with, [musk, untouchable])),
         direction="forward"
     ),
 
     # someone tweets about climate friendly <- ecofriendly
     Rule(
         antecedent=[Fact(Compound(tweets_about, [X, climate_friendly]))],
-        consequent=Fact(Compound(is_probably, [X, eco_friendly])),
+        consequent=Fact(Compound(identifies_with, [X, eco_friendly])),
         direction="backward"
     ),
 
     # someone endorses nvidia <- tech_savvy
     Rule(
         antecedent=[Fact(Compound(endorses, [X, Atom(nvidia)]))],
-        consequent=Fact(Compound(is_probably, [X, tech_savvy])),
+        consequent=Fact(Compound(identifies_with, [X, tech_savvy])),
         direction="backward"
     ),
 
     Rule(
         antecedent=[Fact(Compound(lives_in, [X, siliconValley]))],
-        consequent=Fact(Compound(is_probably, [X, tech_savvy])),
+        consequent=Fact(Compound(identifies_with, [X, tech_savvy])),
         direction="backward"
     )
 
@@ -129,11 +128,11 @@ rules = [
 queries = [
     Query(Compound(consumes, [X, coffee])),
     Query(Compound(tweets_about, [X, eco_friendly])),
-    Query(Compound(likes, [X, avocado_toast])),
+    Query(Compound(identifies_with, [X, avocado_toast])),
     Query(Compound(appears_on, [X, snl])),
-    Query(Compound(likes, [trump, attention_seeking])),
-    Query(Compound(likes, [musk, untouchable])),
-    Query(Compound(likes, [trump, untouchable]))
+    Query(Compound(identifies_with, [trump, attention_seeking])),
+    Query(Compound(identifies_with, [musk, untouchable])),
+    Query(Compound(identifies_with, [trump, untouchable]))
 ]
 
 # -------------------
