@@ -23,7 +23,10 @@ for query in KB.queries:
         print("Result: FAIL\n")
     else:
         # θ is a list of (Variable, value) tuples
-        results = {str(var): str(val) for var, val in θ if var in query.compound.args}
+        for var, val in θ.items():
+            if var in query.compound.args:
+                results = {str(var): str(val)}
+
         if results:
             print(f"Result substitutions: {results}\n")
         else:

@@ -66,7 +66,11 @@ def get_rule_candidates(fact, rules): #return list of rules that match given fac
 
     candidates = []
 
-    fact_op = fact.compound.op
+    if isinstance(fact, ds.Compound):
+        fact_op = fact.op
+    else:
+        fact_op = fact.compound.op
+
     print(f"get_rule_candidates: looking for rules matching operator '{fact_op}")
 
     for rule in rules:
@@ -77,10 +81,11 @@ def get_rule_candidates(fact, rules): #return list of rules that match given fac
             continue
 
         for conjunct in rule.antecedent:
-            if not isinstance(conjunct.compound, Compound):
-                print(f" - Skipped: antecedent is not a compound")
+            if isinstance(conjunct, ds.Compound):
+                antecedent_op = conjunct.op
+            else:
+                antecedent_op = conjunct.compound.op
 
-            antecedent_op = conjunct.compound.op
             print(f" Antecedent operator: {antecedent_op}")
 
             if antecedent_op == fact_op:
@@ -94,9 +99,10 @@ def get_rule_candidates(fact, rules): #return list of rules that match given fac
 
 def get_fact_candidates(query, facts):
     candidates = []
+
     for fact in facts:
 
-        if isinstance(fact, Compound):
+        if isinstance(fact, ds.Compound):
             fact_compound = fact  # already a Compound
         else:
             fact_compound = fact.compound  # Fact object
@@ -116,12 +122,14 @@ def get_fact_candidates(query, facts):
 
 def subst(θ,  term):
     if isinstance(term, ds.Variable):
-        for (var, val) in θ:
-            if var == term:
-                return val
-            return term
-    elif isinstance(term,Compound):
-        return Compound(term.op, [subst(θ, conjunct) for conjunct in term.args])
+        return θ.get(term, term)
+
+    elif isinstance(term, ds.Compound):
+        subst_args = []
+        for arg in term.args:
+            subst_args.append(subst(θ, arg))
+            return ds.Compound(term.op, subst_args)
+
     else:
         return term
 
@@ -182,7 +190,7 @@ def ASK(query, KB_facts, KB_rules):
         for conjunct in rule.antecedent:
             sub_query = ds.Query(conjunct.compound)
             sub_θ = ASK(sub_query, KB_facts, KB_rules)
-            if sub_θ == "FAIL":
+            if sub_θ == "FAIL" or not sub_θ:
                 success = False
                 break
             θ_final.update(sub_θ)
