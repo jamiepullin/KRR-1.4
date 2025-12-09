@@ -5,6 +5,8 @@ print(Fact)
 
 #Terms--------------------------
 # Named Individuals
+
+
 trump = Atom("Trump")
 musk = Atom("Musk")
 kimk = Atom("KimK")
@@ -49,6 +51,18 @@ consumes = Atom("consumes")
 appears_on = Atom("appears_on")
 identifies_with = Atom("identifies_with")
 lives_in = Atom("lives in")
+
+
+terms = [
+    trump, musk, kimk, jimmy_kimmel,
+    nvidia, apple, tesla,
+    whitehouse, siliconValley, hollywood,
+    coffee, avocado_toast,
+    twitter, snl, fox,
+    attention_seeking, untouchable, climate_friendly, coffee_lover, eco_friendly, tech_savvy,
+    X, Y,
+    likes, endorses, tweets_about, consumes, appears_on, identifies_with, lives_in
+]
 
 
 # Facts----------------------------
