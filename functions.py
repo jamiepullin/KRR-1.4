@@ -30,7 +30,7 @@ def unify(x, y, θ=None):
     return None
 
 def unify_var(var, x, θ):
-    print(f"Entering Unify function")
+    print(f"Unifying Variables")
     if var in θ:
         return unify(θ[var], x, θ)
 
@@ -57,7 +57,9 @@ def occur_check(var, x):
 
 
 def print_theta(theta):
-    return ", ".join(f" {v.name} / {repr(t)}" for v, t in theta)
+    if not theta:
+        return "{}"
+    return "{" + ", ".join(f" {v.name} / {repr(t)}" for v, t in theta.items()) + "}"
 
 #------------------- PART III.ii - INFERENCE -------------------
 def get_rule_candidates(fact, rules): #return list of rules that match given fact
@@ -145,7 +147,7 @@ def TELL(fact, KB_facts, KB_rules):
 
     for rule in candidate_rules:
         for ant in rule.antecedent:
-            θ = unify(fact.compound, ant.compound, [])
+            θ = unify(fact.compound, ant.compound, {})
             if θ is not None:
                 cons_subst = subst(θ, rule.consequent.compound)
                 new_fact = ds.Fact(cons_subst)
