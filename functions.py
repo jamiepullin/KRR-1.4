@@ -6,7 +6,7 @@ from dataStructures import Compound
 
 def unify(x, y, θ=None):
     if θ is None:
-        θ = [] #start with empty substitution set
+        θ = {} #start with empty substitution set
     print(f"UNIFY called: {repr(x)}, {repr(y)}, θ = {print_theta(θ)}")
     if x == y:
         return θ  # If x and y are the same, the substitution is complete
@@ -30,19 +30,18 @@ def unify(x, y, θ=None):
     return None
 
 def unify_var(var, x, θ):
-    for (v, t) in θ: #check variable binding
-        if v == var:
-            return unify(t, x, θ)
+    print(f"Entering Unify function")
+    if var in θ:
+        return unify(θ[var], x, θ)
 
-    if isinstance(x, ds.Variable): #check x binding
-        for (v,t) in θ:
-            if v == x:
-                return unify(var, t, θ)
+    elif isinstance(x, ds.Variable) and x in θ: #check x binding
+        return unify(var, θ[x], θ)
 
     if occur_check(var, x): # Occur check to prevent circular unifications
         raise Exception("OCCUR-CHECK Error")
-    θ = θ.copy()
-    θ.append((var,x))
+
+
+    θ[var] = x
     print(f"Added binding: {var.name} / {repr(x)}, θ = {print_theta(θ)}")
 
     return θ
