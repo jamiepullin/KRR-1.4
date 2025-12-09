@@ -104,7 +104,7 @@ def get_fact_candidates(query, facts):
         if fact_compound.op != query.op:
             continue
 
-        if len(fact_compound.args) != len(query.compound.args):
+        if len(fact_compound.args) != len(query.args):
             continue
 
         candidates.append(fact)
