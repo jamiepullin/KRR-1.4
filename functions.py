@@ -1,5 +1,3 @@
-from http.cookiejar import vals_sorted_by_key
-
 import dataStructures as ds
 from dataStructures import Compound
 
@@ -103,7 +101,7 @@ def get_fact_candidates(query, facts):
             fact_compound = fact.compound  # Fact object
 
 
-        if fact_compound.op != query.compound.op:
+        if fact_compound.op != query.op:
             continue
 
         if len(fact_compound.args) != len(query.compound.args):
