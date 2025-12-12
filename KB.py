@@ -1,5 +1,5 @@
 from dataStructures import *
-#help(Compound)
+
 
 print(Fact)
 
